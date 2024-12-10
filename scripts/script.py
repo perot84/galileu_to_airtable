@@ -4,6 +4,7 @@ import re
 from datetime import datetime, time
 import hashlib
 import json
+import os
 
 # Configurar Airtable
 base_id = 'appAYimbUheznQQOk'
