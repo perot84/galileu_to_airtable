@@ -104,7 +104,9 @@ def preprocess_assistents(value):
     return []
 
 # Leer el archivo Excel
-df = pd.read_excel('../xlsx/Informe.xlsx')
+# Obtener la ruta absoluta del archivo
+file_path = os.path.abspath('../xlsx/Informe.xlsx')
+df = pd.read_excel(file_path)
 
 # Función para combinar fechas y horas de manera robusta
 def combine_datetime(date_col, time_col):
