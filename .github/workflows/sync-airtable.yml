@@ -1,0 +1,28 @@
+name: Sync Airtable with XLSX
+
+on:
+  push:
+    paths:
+      - 'xlsx/*.xlsx'
+
+jobs:
+  process-xlsx:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Airtable Sync Script
+        run: |
+          python scripts/script.py
