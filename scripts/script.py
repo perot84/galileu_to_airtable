@@ -1,17 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# Codi Claude
-
-# Actualitzant la hora pero no actualiza els registres, els afegeix
-
-# CORRECTE!
-
-# Cal tenir els valors a Modalitat presents a l'Excel a la columna Modalitat
-
-# In[78]:
-
-
 import pandas as pd
 from pyairtable import Api
 import re
@@ -118,7 +104,7 @@ def preprocess_assistents(value):
     return []
 
 # Leer el archivo Excel
-df = pd.read_excel('Informe.xlsx')
+df = pd.read_excel('../xlsx/Informe.xlsx')
 
 # Función para combinar fechas y horas de manera robusta
 def combine_datetime(date_col, time_col):
