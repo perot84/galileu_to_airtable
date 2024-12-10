@@ -1,2 +1,4 @@
 pandas==2.2.3
 pyairtable==2.3.3
+re==2.2.1
+json==2.0.9
