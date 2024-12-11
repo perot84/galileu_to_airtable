@@ -7,7 +7,14 @@ on:
 jobs:
   upload-file:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Configurar el entorno
         run: |
           sudo apt-get update
@@ -28,17 +35,11 @@ jobs:
             exit 1
           fi
 
-      - name: Subir archivo al repositorio
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Commit and push changes
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          
-          git clone "https://$GITHUB_TOKEN@github.com/perot84/galileu_to_airtable.git" repo
-          cp file.xlsx repo/
-          cd repo
+          git config user.name github-actions
+          git config user.email github-actions@github.com
           
           git add file.xlsx
           git commit -m "Actualización diaria del archivo desde Airtable" || exit 0
-          git push origin main
+          git push
