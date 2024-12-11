@@ -17,7 +17,7 @@ jobs:
 
       - name: Descargar archivo desde Airtable
         run: |
-          curl -o file.xlsx "$(curl -s -X GET 'https://api.airtable.com/v0/appAYimbUheznQQOk/Arxius Galileu?api_key=patLkBfCxA1ZEmVEP.181f72ab43a5c29e98f0bda540ce7bfecac01860789b7b91f5bae1a1a9d7edcf' \
+          curl -o file.xlsx "$(curl -s -X GET 'https://api.airtable.com/v0/appAYimbUheznQQOk/Arxius_Galileu?api_key=patLkBfCxA1ZEmVEP.181f72ab43a5c29e98f0bda540ce7bfecac01860789b7b91f5bae1a1a9d7edcf' \
           | jq -r '.records[0].fields.Arxiu[0].url')"
 
       - name: Subir archivo al repositorio
