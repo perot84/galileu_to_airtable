@@ -43,11 +43,14 @@ jobs:
           # Asegúrate de que la carpeta xlsx exista
           mkdir -p xlsx
           
-          # Mueve el archivo descargado a la carpeta xlsx
+          # Elimina cualquier archivo .xlsx existente en la carpeta
+          rm -f xlsx/*.xlsx
+          
+          # Mueve el nuevo archivo a la carpeta xlsx
           mv file.xlsx xlsx/
           
           # Añade el archivo en la carpeta xlsx
-          git add xlsx/file.xlsx
+          git add xlsx/
           
           # Commitea los cambios
           git commit -m "Actualización diaria del archivo desde Airtable" || exit 0
