@@ -35,7 +35,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          git clone https://${GITHUB_TOKEN}@github.com/<USERNAME>/<REPOSITORY>.git repo
+          git clone https://${GITHUB_TOKEN}@github.com/<perot84>/<galileu_to_airtable>.git repo
           mv file.xlsx repo/
           cd repo
           
