@@ -3,15 +3,11 @@ name: Sync Airtable with XLSX
 on:
   push:
     paths:
-      - 'xlsx/file.xlsx'
-  workflow_dispatch:  # Permite ejecutar el workflow manualmente si es necesario
+      - 'xlsx/*.xlsx'
 
 jobs:
   process-xlsx:
     runs-on: ubuntu-latest
-    
-    # Añadimos una condición para verificar si el archivo existe
-    if: hashFiles('xlsx/file.xlsx') != ''
 
     steps:
       - name: Checkout repository
@@ -30,6 +26,3 @@ jobs:
       - name: Run Airtable Sync Script
         run: |
           python scripts/script.py
-        env:
-          # Podemos añadir variables de entorno si son necesarias
-          FILE_PATH: 'xlsx/file.xlsx'
