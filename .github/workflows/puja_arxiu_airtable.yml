@@ -22,7 +22,7 @@ jobs:
         env:
           AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
         run: |
-          ATTACHMENT_URL=$(curl -s -X GET "https://api.airtable.com/v0/appAYimbUheznQQOk/Arxius_Galileu" \
+          ATTACHMENT_URL=$(curl -s -X GET "https://api.airtable.com/v0/appAYimbUheznQQOk/Arxius_Galileu?sort%5B0%5D%5Bfield%5D=Created&sort%5B0%5D%5Bdirection%5D=desc" \
             -H "Authorization: Bearer $AIRTABLE_API_KEY" \
             | jq -r '.records[0].fields.Arxiu[0].url')
           
