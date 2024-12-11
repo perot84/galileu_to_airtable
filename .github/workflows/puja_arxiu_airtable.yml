@@ -14,12 +14,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Configurar el entorno
         run: |
           sudo apt-get update
           sudo apt-get install -y jq
-
       - name: Descargar archivo desde Airtable
         env:
           AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
@@ -34,7 +32,6 @@ jobs:
             echo "No se encontró la URL del archivo"
             exit 1
           fi
-
       - name: Commit and push changes
         run: |
           git config user.name github-actions
@@ -43,11 +40,8 @@ jobs:
           # Asegúrate de que la carpeta xlsx exista
           mkdir -p xlsx
           
-          # Elimina cualquier archivo .xlsx existente en la carpeta
-          rm -f xlsx/*.xlsx
-          
-          # Mueve el nuevo archivo a la carpeta xlsx
-          mv file.xlsx xlsx/
+          # Mueve el nuevo archivo a la carpeta xlsx, sobrescribiendo si existe
+          mv -f file.xlsx xlsx/
           
           # Añade el archivo en la carpeta xlsx
           git add xlsx/
