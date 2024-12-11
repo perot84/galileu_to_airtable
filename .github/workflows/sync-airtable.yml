@@ -3,7 +3,7 @@ name: Sync Airtable with XLSX
 on:
   push:
     paths:
-      - 'xlsx/*.xlsx'
+      - 'xlsx/file.xlsx'
   workflow_dispatch:  # Permite ejecutar manualmente el flujo de trabajo
   schedule:
     - cron: '0 0 * * *'  # Se ejecuta todos los días a las 00:00 UTC
