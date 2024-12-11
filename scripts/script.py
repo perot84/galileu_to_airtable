@@ -61,10 +61,12 @@ def get_existing_records():
     existing = {}
     for record in records:
         fields = record['fields']
-        # Usar el Identificador_Únic si existe, de lo contrario crear uno
         identifier = fields.get('Identificador_Únic')
         if identifier:
-            existing[identifier] = record['id']
+            existing[identifier] = {
+                'id': record['id'],
+                'fields': fields
+            }
     return existing
 
 # Función para obtener el ID de Airtable de un asistente dado su NIF
@@ -179,7 +181,7 @@ def prepare_record_data(record_data):
                 record_data[col] = [] if pd.isna(record_data[col]) else [record_data[col]]
     return record_data
 
-# Justo antes de la función process_records, añade esto:
+# Función para depuración
 def debug_record_processing(df):
     print("Total de registros en el DataFrame:", len(df))
     for index, row in df.iterrows():
@@ -193,22 +195,21 @@ def debug_record_processing(df):
         print("Tècnic:", row['Tècnic'])
         print("Programa:", row['Programa'])
 
-        
 # Procesar registros
 def process_records(df, existing_records):
-    debug_record_processing(df)  # Añadir esta línea para depuración
+    debug_record_processing(df)
     
+    # Crear un conjunto de identificadores del archivo Excel
+    excel_identifiers = set(df['Identificador_Únic'])
+    
+    # Procesar registros del Excel
     for index, row in df.iterrows():
-        # Obtener el identificador único
         identifier = row['Identificador_Únic']
-
-        # Preparar datos del registro
-        record_data = row.to_dict()
-        record_data = prepare_record_data(record_data)
-
+        record_data = prepare_record_data(row.to_dict())
+        
         if identifier in existing_records:
             # Actualizar registro existente
-            record_id = existing_records[identifier]
+            record_id = existing_records[identifier]['id']
             print(f"Actualizando registro existente con ID: {record_id}")
             try:
                 accions_table.update(record_id, record_data)
@@ -224,21 +225,23 @@ def process_records(df, existing_records):
                 print(f"Registro creado con éxito. ID: {new_record['id']}")
             except Exception as e:
                 print(f"Error al crear nuevo registro: {str(e)}")
-                # Imprimir detalles completos del error
                 print(f"Detalles completos del error: {e}")
-                # Si es un error de Airtable, imprimir la respuesta completa
                 if hasattr(e, 'response'):
                     print("Respuesta de Airtable:", e.response.text)
+    
+    # Verificar registros a eliminar
+    for identifier, record_info in existing_records.items():
+        if identifier not in excel_identifiers:
+            record_id = record_info['id']
+            print(f"Eliminando registro con ID: {record_id} (Identificador: {identifier})")
+            try:
+                accions_table.delete(record_id)
+                print(f"Registro eliminado: {record_id}")
+            except Exception as e:
+                print(f"Error al eliminar registro {record_id}: {str(e)}")
 
 # Obtener registros existentes en Airtable
 existing_records = get_existing_records()
 
 # Procesar registros
 process_records(df_airtable, existing_records)
-
-
-# In[ ]:
-
-
-
-
