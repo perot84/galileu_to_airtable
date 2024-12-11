@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'xlsx/*.xlsx'
+  workflow_dispatch:  # Permite ejecutar manualmente el flujo de trabajo
 
 jobs:
   process-xlsx:
