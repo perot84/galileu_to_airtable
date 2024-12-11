@@ -1,14 +1,12 @@
 name: Upload File from Airtable
-
 on:
   schedule:
-    - cron: '0 0 * * *' # Se ejecuta todos los días a las 00:00 UTC
-  workflow_dispatch: # Permite ejecutar manualmente el flujo de trabajo
+    - cron: '0 0 * * *'  # Se ejecuta todos los días a las 00:00 UTC
+  workflow_dispatch:  # Permite ejecutar manualmente el flujo de trabajo
   
 jobs:
   upload-file:
     runs-on: ubuntu-latest
-
     steps:
       - name: Configurar el entorno
         run: |
@@ -16,17 +14,31 @@ jobs:
           sudo apt-get install -y jq
 
       - name: Descargar archivo desde Airtable
+        env:
+          AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
         run: |
-          curl -o file.xlsx "$(curl -s -X GET 'https://api.airtable.com/v0/appAYimbUheznQQOk/Arxius_Galileu?api_key=patLkBfCxA1ZEmVEP.181f72ab43a5c29e98f0bda540ce7bfecac01860789b7b91f5bae1a1a9d7edcf' \
-          | jq -r '.records[0].fields.Arxiu[0].url')"
+          ATTACHMENT_URL=$(curl -s -X GET "https://api.airtable.com/v0/appAYimbUheznQQOk/Arxius_Galileu" \
+            -H "Authorization: Bearer $AIRTABLE_API_KEY" \
+            | jq -r '.records[0].fields.Arxiu[0].url')
+          
+          if [ -n "$ATTACHMENT_URL" ]; then
+            curl -L -o file.xlsx "$ATTACHMENT_URL"
+          else
+            echo "No se encontró la URL del archivo"
+            exit 1
+          fi
 
       - name: Subir archivo al repositorio
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git clone https://github.com/<USERNAME>/<REPOSITORY>.git repo
+          
+          git clone https://${GITHUB_TOKEN}@github.com/<USERNAME>/<REPOSITORY>.git repo
           mv file.xlsx repo/
           cd repo
+          
           git add file.xlsx
-          git commit -m "Actualización diaria del archivo desde Airtable"
+          git commit -m "Actualización diaria del archivo desde Airtable" || exit 0
           git push
