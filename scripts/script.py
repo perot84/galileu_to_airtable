@@ -107,7 +107,7 @@ def preprocess_assistents(value):
 # Leer el archivo Excel
 # Obtener la ruta al directorio raíz del repositorio
 repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-file_path = os.path.join(repo_root, 'xlsx', 'Informe.xlsx')
+file_path = os.path.join(repo_root, 'xlsx', 'file.xlsx')
 df = pd.read_excel(file_path)
 
 # Función para combinar fechas y horas de manera robusta
