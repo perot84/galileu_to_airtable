@@ -40,6 +40,17 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           
-          git add file.xlsx
+          # Asegúrate de que la carpeta xlsx exista
+          mkdir -p xlsx
+          
+          # Mueve el archivo descargado a la carpeta xlsx
+          mv file.xlsx xlsx/
+          
+          # Añade el archivo en la carpeta xlsx
+          git add xlsx/file.xlsx
+          
+          # Commitea los cambios
           git commit -m "Actualización diaria del archivo desde Airtable" || exit 0
+          
+          # Sube los cambios
           git push
