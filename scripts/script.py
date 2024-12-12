@@ -12,7 +12,9 @@ accions_table_name = 'Accions'
 assistents_table_name = 'Persones'
 programa_table_name = 'Programa'
 tecnics_table_name = 'Tècnic'
-api_key = AIRTABLE_API_KEY
+api_key = os.getenv('AIRTABLE_API_KEY')
+if not api_key:
+    raise ValueError("La clave API de Airtable no está configurada en las variables de entorno.")
 api = Api(api_key)
 
 # Inicializar tablas
