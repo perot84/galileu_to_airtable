@@ -12,7 +12,7 @@ accions_table_name = 'Accions'
 assistents_table_name = 'Persones'
 programa_table_name = 'Programa'
 tecnics_table_name = 'Tècnic'
-api_key = 'patLkBfCxA1ZEmVEP.181f72ab43a5c29e98f0bda540ce7bfecac01860789b7b91f5bae1a1a9d7edcf'
+api_key = AIRTABLE_API_KEY
 api = Api(api_key)
 
 # Inicializar tablas
