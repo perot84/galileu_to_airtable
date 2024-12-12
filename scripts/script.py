@@ -59,11 +59,11 @@ def create_record_hash(record):
 
 # Función para obtener registros existentes en la tabla "Accions"
 def get_existing_records():
-    records = accions_table.all(fields=['Identificador_Únic', 'Assistents', 'Nom', 'Data inici', 'Data de fi'])
+    records = accions_table.all(fields=['ID_Galileu', 'Assistents', 'Nom', 'Data inici', 'Data de fi'])
     existing = {}
     for record in records:
         fields = record['fields']
-        identifier = fields.get('Identificador_Únic')
+        identifier = fields.get('ID_Galileu')
         if identifier:
             existing[identifier] = {
                 'id': record['id'],
@@ -170,7 +170,7 @@ df_airtable['Data inici'] = df_airtable['Data inici'].dt.strftime('%Y-%m-%d %H:%
 df_airtable['Data de fi'] = df_airtable['Data de fi'].dt.strftime('%Y-%m-%d %H:%M')
 
 # Generar identificador único para cada registro
-df_airtable['Identificador_Únic'] = df_airtable.apply(create_record_hash, axis=1)
+df_airtable['ID_Galileu'] = df_airtable.apply(create_record_hash, axis=1)
 
 # Función para verificar y preparar datos antes de enviarlos
 def prepare_record_data(record_data):
@@ -188,7 +188,7 @@ def debug_record_processing(df):
     print("Total de registros en el DataFrame:", len(df))
     for index, row in df.iterrows():
         print(f"\nRegistro {index + 1}:")
-        print("Identificador Único:", row['Identificador_Únic'])
+        print("Identificador Único:", row['ID_Galileu'])
         print("Nom:", row['Nom'])
         print("Data inici:", row['Data inici'])
         print("Data de fi:", row['Data de fi'])
@@ -202,11 +202,11 @@ def process_records(df, existing_records):
     debug_record_processing(df)
     
     # Crear un conjunto de identificadores del archivo Excel
-    excel_identifiers = set(df['Identificador_Únic'])
+    excel_identifiers = set(df['ID_Galileu'])
     
     # Procesar registros del Excel
     for index, row in df.iterrows():
-        identifier = row['Identificador_Únic']
+        identifier = row['ID_Galileu']
         record_data = prepare_record_data(row.to_dict())
         
         if identifier in existing_records:
